@@ -13,6 +13,9 @@ export interface SentryFacade {
   breadcrumb(message: string, data: Record<string, string | number>): void;
 }
 
+/** Nunca ligadas: replay/feedback (gravam a tela/PII) e sessões de release health (o GlitchTip não usa). */
+const EXCLUDED_INTEGRATIONS = new Set(['BrowserSession', 'Replay', 'ReplayCanvas', 'Feedback']);
+
 type BeforeSend = NonNullable<BrowserOptions['beforeSend']>;
 type ErrorEvent = Parameters<BeforeSend>[0];
 
@@ -39,9 +42,11 @@ export function startSentry(config: ObservabilityConfig, injector: Injector): Se
     tracesSampleRate: config.tracesSampleRate ?? 0.1,
     tracePropagationTargets: propagationTargets(config.apiOrigins),
     propagateTraceparent: true,
+    // v11 usa span streaming por padrão ('stream'); o GlitchTip 6 só ingere transações clássicas.
+    traceLifecycle: 'static',
     // Sem replay; sem sessões de release health (o GlitchTip não usa).
     integrations: (defaults) => [
-      ...defaults.filter((i) => i.name !== 'BrowserSession'),
+      ...defaults.filter((i) => !EXCLUDED_INTEGRATIONS.has(i.name)),
       browserTracingIntegration(),
     ],
     initialScope: { tags: { 'service.name': config.serviceName } },
