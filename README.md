@@ -185,5 +185,12 @@ Decisões:
   sem `require(esm)`.
 - **Angular sem decorators** (`makeEnvironmentProviders`, `inject()`, providers por factory): build com
   tsup, sem ng-packagr.
+- **`traceLifecycle: 'static'` no front**: o `@sentry/*` 11 envia spans em streaming por padrão, formato que o
+  GlitchTip 6.2.6 aceita (HTTP 200) mas descarta; com `static` as navegações chegam como transações
+  (conferido no E2E: `/projects/project-list/ ; navigation`).
+- **CSP só com `report-uri`** (sem `report-to`): o endpoint de segurança do GlitchTip 6.2.6 aceita o formato
+  `application/csp-report` (201) e recusa o da Reporting API `application/reports+json` (422); com `report-to`
+  o Chrome passaria a usar só o formato recusado. O DSN serve de base: `<origem>/api/<projeto>/security/?sentry_key=<chave>`
+  (aceito pelo GlitchTip e pelo Sentry).
 - **Sentry só para erros no back**: `enableOpenTelemetrySetup: false`, sem integrações automáticas de
   http/express (traces são do OTel; não há instrumentação dupla).
