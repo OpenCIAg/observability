@@ -151,7 +151,7 @@ function setupOtel(config: ResolvedConfig, warn: (msg: string) => void): Array<(
         }),
       ],
     });
-    const otelLogger = loggerProvider.getLogger('@openciag/observability');
+    const otelLogger = loggerProvider.getLogger('@ciag/observability');
     state().emitLog = (record: LogRecordInput) => {
       const context =
         record.traceId !== undefined && record.spanId !== undefined

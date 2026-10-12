@@ -1,6 +1,6 @@
 name: Release
 
-# Publica @openciag/observability no npm quando uma tag v<versão> é enviada.
+# Publica @ciag/observability no npm quando uma tag v<versão> é enviada.
 # npm trusted publishing (OIDC): cadastre este repositório/workflow em
 # npmjs.com → pacote → Settings → Trusted publishing; nenhum token é guardado aqui.
 on:

@@ -1,5 +1,5 @@
 {
-  "name": "@openciag/observability",
+  "name": "@ciag/observability",
   "version": "0.1.0",
   "description": "Observabilidade padrão CIAg (OpenTelemetry + protocolo Sentry) para NestJS e Angular, com redação de PII (LGPD).",
   "license": "MIT",

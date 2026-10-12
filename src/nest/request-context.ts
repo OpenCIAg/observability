@@ -62,7 +62,7 @@ type Next = (err?: unknown) => void;
 let authCounter: ReturnType<ReturnType<typeof metrics.getMeter>['createCounter']> | undefined;
 
 function countClientError(status: number, route: string): void {
-  authCounter ??= metrics.getMeter('@openciag/observability').createCounter('ciag.http.server.rejected', {
+  authCounter ??= metrics.getMeter('@ciag/observability').createCounter('ciag.http.server.rejected', {
     description: 'Respostas 401/403/429 (login falho, sem permissão, rate limit)',
   });
   authCounter.add(1, { 'http.response.status_code': status, 'http.route': route });
