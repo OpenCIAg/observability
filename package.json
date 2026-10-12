@@ -210,7 +210,6 @@
   },
   "homepage": "https://github.com/OpenCIAg/observability#readme",
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   }
 }
