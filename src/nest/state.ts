@@ -38,7 +38,7 @@ interface State {
   initialized: boolean;
 }
 
-const KEY = Symbol.for('@ciag/observability/nest/state');
+const KEY = Symbol.for('@openciag/observability/nest/state');
 
 type GlobalWithState = typeof globalThis & { [KEY]?: State };
 

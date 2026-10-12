@@ -19,7 +19,7 @@ export interface ObservabilityModuleOptions {
 }
 
 /** Token de injeção do `NestJsonLogger`. */
-export const OBSERVABILITY_LOGGER = Symbol.for('@ciag/observability/nest/logger');
+export const OBSERVABILITY_LOGGER = Symbol.for('@openciag/observability/nest/logger');
 
 /** Logger JSON do Nest (o mesmo em todo o processo). Use em `NestFactory.create(App, { logger: observabilityLogger() })`. */
 export function observabilityLogger(): NestJsonLogger {

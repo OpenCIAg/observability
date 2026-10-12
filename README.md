@@ -1,7 +1,7 @@
-# @ciag/observability
+# @openciag/observability
 
-Observabilidade padrão CIAg para **NestJS** (`@ciag/observability/nest`) e **Angular**
-(`@ciag/observability/angular`). O app fala só padrões abertos — **OpenTelemetry (OTLP)** para
+Observabilidade padrão CIAg para **NestJS** (`@openciag/observability/nest`) e **Angular**
+(`@openciag/observability/angular`). O app fala só padrões abertos — **OpenTelemetry (OTLP)** para
 traces/métricas/logs e **protocolo Sentry** para erros —, então trocar a plataforma
 (Grafana ↔ SigNoz, GlitchTip ↔ Sentry) é configuração, nunca código do app.
 
@@ -17,7 +17,7 @@ traces/métricas/logs e **protocolo Sentry** para erros —, então trocar a pla
 ### Back (NestJS 11)
 
 ```bash
-npm i @ciag/observability \
+npm i @openciag/observability \
   @opentelemetry/api @opentelemetry/api-logs @opentelemetry/core @opentelemetry/resources \
   @opentelemetry/semantic-conventions @opentelemetry/sdk-trace-node @opentelemetry/sdk-trace-base \
   @opentelemetry/sdk-metrics @opentelemetry/sdk-logs @opentelemetry/exporter-trace-otlp-http \
@@ -33,7 +33,7 @@ Angular, e vice-versa. As versões testadas estão em `devDependencies` deste pa
 1. `src/instrumentation.ts` (arquivo próprio, carregado ANTES do Nest):
 
    ```ts
-   import { initTelemetry } from '@ciag/observability/nest';
+   import { initTelemetry } from '@openciag/observability/nest';
    // Padrões do código; OTEL_SERVICE_NAME / APP_RELEASE / DEPLOYMENT_ENVIRONMENT têm prioridade.
    initTelemetry({ serviceName: 'teatime-api', serviceVersion: pkg.version });
    ```
@@ -42,7 +42,7 @@ Angular, e vice-versa. As versões testadas estão em `devDependencies` deste pa
 
    ```ts
    import './instrumentation';
-   import { observabilityLogger } from '@ciag/observability/nest';
+   import { observabilityLogger } from '@openciag/observability/nest';
    const app = await NestFactory.create(AppModule, { logger: observabilityLogger() });
    ```
 
@@ -58,7 +58,7 @@ Angular, e vice-versa. As versões testadas estão em `devDependencies` deste pa
 ### Front (Angular 19–22, standalone)
 
 ```bash
-npm i @ciag/observability @sentry/angular
+npm i @openciag/observability @sentry/angular
 ```
 
 ```ts
@@ -83,7 +83,7 @@ anteriores ao carregamento ficam numa fila (até 20) e são enviados quando o SD
 
 ## O que cada lado faz
 
-### `@ciag/observability/nest`
+### `@openciag/observability/nest`
 
 | API | Faz |
 | --- | --- |
@@ -98,7 +98,7 @@ Exemplo de linha:
 {"level":"info","time":"2026-10-12T18:28:12.327Z","context":"HTTP","requestId":"9c02…","method":"GET","route":"/projects/:id","status":200,"duration_ms":12.4,"ip":"10.0.0.7","userId":"6f1c…","trace_id":"a228…","span_id":"c3c0…","msg":"GET /projects/:id 200 12.4ms"}
 ```
 
-### `@ciag/observability/angular`
+### `@openciag/observability/angular`
 
 | API | Faz |
 | --- | --- |
@@ -156,11 +156,11 @@ Até a publicação no npm, os apps consomem o tarball versionado no próprio re
 ```bash
 npm run build && npm pack            # gera ciag-observability-0.1.0.tgz
 cp ciag-observability-0.1.0.tgz <app>/vendor/
-# package.json do app: "@ciag/observability": "file:vendor/ciag-observability-0.1.0.tgz"
+# package.json do app: "@openciag/observability": "file:vendor/ciag-observability-0.1.0.tgz"
 ```
 
 Funciona no Docker/CI sem credencial de registry. Depois de publicado (`npm publish --access public`):
-`npm i @ciag/observability@0.1.0 --save-exact`, apague `vendor/ciag-observability-*.tgz` e confira que o
+`npm i @openciag/observability@0.1.0 --save-exact`, apague `vendor/ciag-observability-*.tgz` e confira que o
 lockfile resolve para `registry.npmjs.org`.
 
 ## Desenvolvimento

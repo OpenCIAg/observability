@@ -1,16 +1,17 @@
 {
-  "name": "@ciag/observability",
+  "name": "@openciag/observability",
   "version": "0.1.0",
   "description": "Observabilidade padrão CIAg (OpenTelemetry + protocolo Sentry) para NestJS e Angular, com redação de PII (LGPD).",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/core/index.cjs",
   "module": "./dist/core/index.js",
   "types": "./dist/core/index.d.ts",
   "files": [
-    "dist",
-    "README.md"
+    "LICENSE",
+    "README.md",
+    "dist"
   ],
   "exports": {
     ".": {
@@ -202,5 +203,14 @@
     "tsup": "8.5.1",
     "typescript": "5.9.3",
     "vitest": "5.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OpenCIAg/observability.git"
+  },
+  "homepage": "https://github.com/OpenCIAg/observability#readme",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

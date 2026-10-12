@@ -1,0 +1,35 @@
+name: Release
+
+# Publica @openciag/observability no npm quando uma tag v<versão> é enviada.
+# npm trusted publishing (OIDC): cadastre este repositório/workflow em
+# npmjs.com → pacote → Settings → Trusted publishing; nenhum token é guardado aqui.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - name: Cliente npm com trusted publishing
+        run: npm install --global npm@11.5.1
+      - run: npm ci
+      - name: Tag igual à versão do package.json
+        run: test "v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
+      - name: Typecheck, testes, build e teste de contrato
+        run: npm run check
+      - name: Publicar (pré-release vai para a dist-tag next)
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          case "$VERSION" in *-*) TAG=next ;; *) TAG=latest ;; esac
+          npm publish --access public --provenance --tag "$TAG"
