@@ -208,6 +208,8 @@ describe('NestJsonLogger (semântica do ConsoleLogger)', () => {
     logger.error('só stack', 'Error: x\n    at y (z.js:1:1)');
     logger.warn({ msg: 'objeto', password: 'x' }, 'Ctx');
     logger.verbose('detalhe');
+    const cause = Object.assign(new Error('AADSTS700038 para ana@ciag.org.br'), { code: 'AuthenticationRequiredError' });
+    logger.error('Erro ao inicializar conexão com o SharePoint', cause);
     const [a, b, c, d, e] = mem.lines();
     expect(a).toMatchObject({ level: 'info', msg: 'subiu', context: 'NestApplication' });
     expect(b).toMatchObject({ level: 'error', msg: 'falhou', context: 'SharepointService' });
@@ -216,6 +218,15 @@ describe('NestJsonLogger (semântica do ConsoleLogger)', () => {
     expect(c!.stack).toContain('at y');
     expect(d).toMatchObject({ level: 'warn', msg: 'objeto', password: REDACTED, context: 'Ctx' });
     expect(e).toMatchObject({ level: 'trace', msg: 'detalhe' });
+    const f = mem.lines()[5]!;
+    expect(f).toMatchObject({ level: 'error', msg: 'Erro ao inicializar conexão com o SharePoint' });
+    expect(f.params).toBeUndefined();
+    expect(f.err).toMatchObject({
+      type: 'Error',
+      message: 'AADSTS700038 para a***@ciag.org.br',
+      code: 'AuthenticationRequiredError',
+    });
+    expect((f.err as { stack: string }).stack).toContain('nest.test.ts');
     expect(typeof a!.time).toBe('string');
   });
 

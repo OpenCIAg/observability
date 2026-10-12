@@ -174,6 +174,12 @@ export class NestJsonLogger implements LoggerService {
         rest.shift();
       }
     }
+    // `logger.error('msg', error)` (padrão do app): o Error vira `err` (pino serializa type/message/stack).
+    const errIndex = rest.findIndex((p) => p instanceof Error);
+    if (errIndex >= 0 && !(message instanceof Error)) {
+      fields.err = rest[errIndex];
+      rest.splice(errIndex, 1);
+    }
     if (rest.length > 0) fields.params = rest;
     const method = NEST_TO_PINO[level];
     if (message instanceof Error) {

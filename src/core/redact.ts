@@ -121,6 +121,10 @@ function redactInner(value: unknown, depth: number, seen: WeakSet<object>): unkn
     const err = new Error(redactString(value.message));
     err.name = value.name;
     if (value.stack !== undefined) err.stack = redactString(value.stack);
+    // Campos próprios (code, statusCode…) seguem com redação.
+    for (const [key, inner] of Object.entries(value)) {
+      Reflect.set(err, key, isSensitiveKey(key) ? REDACTED : redactInner(inner, depth + 1, seen));
+    }
     seen.delete(value);
     return err;
   }
