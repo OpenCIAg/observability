@@ -119,7 +119,7 @@ function redactInner(value: unknown, depth: number, seen: WeakSet<object>): unkn
   }
   if (value instanceof Error) {
     const err = new Error(redactString(value.message));
-    err.name = value.name;
+    Object.defineProperty(err, 'name', { value: value.name, enumerable: false, writable: true, configurable: true });
     if (value.stack !== undefined) err.stack = redactString(value.stack);
     // Campos próprios (code, statusCode…) seguem com redação.
     for (const [key, inner] of Object.entries(value)) {
