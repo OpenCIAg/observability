@@ -1,0 +1,192 @@
+{
+  "name": "@ciag/observability",
+  "version": "0.1.0",
+  "description": "Observabilidade padrão CIAg (OpenTelemetry + protocolo Sentry) para NestJS e Angular, com redação de PII (LGPD).",
+  "license": "UNLICENSED",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js",
+      "require": "./dist/core/index.cjs"
+    },
+    "./nest": {
+      "types": "./dist/nest/index.d.ts",
+      "import": "./dist/nest/index.js",
+      "require": "./dist/nest/index.cjs"
+    },
+    "./angular": {
+      "types": "./dist/angular/index.d.ts",
+      "import": "./dist/angular/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:contract": "node scripts/contract-test.cjs",
+    "check": "npm run typecheck && npm test && npm run build && npm run test:contract"
+  },
+  "engines": {
+    "node": ">=20.6"
+  },
+  "peerDependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/api-logs": "^0.223.0",
+    "@opentelemetry/core": "^2.12.0",
+    "@opentelemetry/resources": "^2.12.0",
+    "@opentelemetry/semantic-conventions": "^1.29.0",
+    "@opentelemetry/sdk-trace-node": "^2.12.0",
+    "@opentelemetry/sdk-trace-base": "^2.12.0",
+    "@opentelemetry/sdk-metrics": "^2.12.0",
+    "@opentelemetry/sdk-logs": "^0.223.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.223.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.223.0",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.223.0",
+    "@opentelemetry/instrumentation": "^0.223.0",
+    "@opentelemetry/instrumentation-http": "^0.223.0",
+    "@opentelemetry/instrumentation-express": "^0.71.0",
+    "@opentelemetry/instrumentation-nestjs-core": "^0.69.0",
+    "@opentelemetry/instrumentation-mysql2": "^0.69.0",
+    "@prisma/instrumentation": ">=6.1.0 <8",
+    "@sentry/nestjs": "^11.7.0",
+    "pino": "^9.0.0 || ^10.0.0",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@sentry/angular": "^11.7.0",
+    "@angular/core": ">=19.0.0 <23.0.0",
+    "@angular/common": ">=19.0.0 <23.0.0",
+    "@angular/router": ">=19.0.0 <23.0.0",
+    "rxjs": "^7.4.0"
+  },
+  "peerDependenciesMeta": {
+    "@opentelemetry/api": {
+      "optional": true
+    },
+    "@opentelemetry/api-logs": {
+      "optional": true
+    },
+    "@opentelemetry/core": {
+      "optional": true
+    },
+    "@opentelemetry/resources": {
+      "optional": true
+    },
+    "@opentelemetry/semantic-conventions": {
+      "optional": true
+    },
+    "@opentelemetry/sdk-trace-node": {
+      "optional": true
+    },
+    "@opentelemetry/sdk-trace-base": {
+      "optional": true
+    },
+    "@opentelemetry/sdk-metrics": {
+      "optional": true
+    },
+    "@opentelemetry/sdk-logs": {
+      "optional": true
+    },
+    "@opentelemetry/exporter-trace-otlp-http": {
+      "optional": true
+    },
+    "@opentelemetry/exporter-metrics-otlp-http": {
+      "optional": true
+    },
+    "@opentelemetry/exporter-logs-otlp-http": {
+      "optional": true
+    },
+    "@opentelemetry/instrumentation": {
+      "optional": true
+    },
+    "@opentelemetry/instrumentation-http": {
+      "optional": true
+    },
+    "@opentelemetry/instrumentation-express": {
+      "optional": true
+    },
+    "@opentelemetry/instrumentation-nestjs-core": {
+      "optional": true
+    },
+    "@opentelemetry/instrumentation-mysql2": {
+      "optional": true
+    },
+    "@prisma/instrumentation": {
+      "optional": true
+    },
+    "@sentry/nestjs": {
+      "optional": true
+    },
+    "pino": {
+      "optional": true
+    },
+    "@nestjs/common": {
+      "optional": true
+    },
+    "@nestjs/core": {
+      "optional": true
+    },
+    "@sentry/angular": {
+      "optional": true
+    },
+    "@angular/core": {
+      "optional": true
+    },
+    "@angular/common": {
+      "optional": true
+    },
+    "@angular/router": {
+      "optional": true
+    },
+    "rxjs": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@angular/common": "22.2.2",
+    "@angular/compiler": "22.2.2",
+    "@angular/core": "22.2.2",
+    "@angular/platform-browser": "22.2.2",
+    "@angular/router": "22.2.2",
+    "@nestjs/common": "11.1.16",
+    "@nestjs/core": "11.1.16",
+    "@nestjs/platform-express": "11.1.16",
+    "@nestjs/testing": "11.1.16",
+    "@opentelemetry/api": "1.9.1",
+    "@opentelemetry/api-logs": "0.223.0",
+    "@opentelemetry/core": "2.12.0",
+    "@opentelemetry/exporter-logs-otlp-http": "0.223.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "0.223.0",
+    "@opentelemetry/exporter-trace-otlp-http": "0.223.0",
+    "@opentelemetry/instrumentation": "0.223.0",
+    "@opentelemetry/instrumentation-express": "0.71.0",
+    "@opentelemetry/instrumentation-http": "0.223.0",
+    "@opentelemetry/instrumentation-mysql2": "0.69.0",
+    "@opentelemetry/instrumentation-nestjs-core": "0.69.0",
+    "@opentelemetry/resources": "2.12.0",
+    "@opentelemetry/sdk-logs": "0.223.0",
+    "@opentelemetry/sdk-metrics": "2.12.0",
+    "@opentelemetry/sdk-trace-base": "2.12.0",
+    "@opentelemetry/sdk-trace-node": "2.12.0",
+    "@opentelemetry/semantic-conventions": "1.43.0",
+    "@prisma/instrumentation": "6.19.3",
+    "@sentry/angular": "11.7.0",
+    "@sentry/nestjs": "11.7.0",
+    "@types/express": "5.0.6",
+    "@types/node": "22.20.5",
+    "@types/supertest": "7.2.1",
+    "pino": "10.4.0",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "supertest": "7.3.1",
+    "tsup": "8.5.1",
+    "typescript": "5.9.3",
+    "vitest": "5.0.4"
+  }
+}
