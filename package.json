@@ -40,11 +40,12 @@
     }
   },
   "scripts": {
-    "build": "tsup",
+    "build": "rm -rf dist && tsup && node scripts/check-dist.cjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:contract": "node scripts/contract-test.cjs",
-    "check": "npm run typecheck && npm test && npm run build && npm run test:contract"
+    "check": "npm run typecheck && npm test && npm run build && npm run test:contract",
+    "prepack": "npm run build"
   },
   "engines": {
     "node": ">=20.6"

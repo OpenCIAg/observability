@@ -9,7 +9,7 @@ export default defineConfig([
     target: 'node20',
     dts: true,
     sourcemap: true,
-    clean: true,
+    clean: false,
     shims: true,
     splitting: false,
     outDir: 'dist',
