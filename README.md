@@ -34,7 +34,8 @@ Angular, e vice-versa. As versões testadas estão em `devDependencies` deste pa
 
    ```ts
    import { initTelemetry } from '@ciag/observability/nest';
-   initTelemetry({ serviceName: 'teatime-api' }); // versão/ambiente vêm de APP_RELEASE / DEPLOYMENT_ENVIRONMENT
+   // Padrões do código; OTEL_SERVICE_NAME / APP_RELEASE / DEPLOYMENT_ENVIRONMENT têm prioridade.
+   initTelemetry({ serviceName: 'teatime-api', serviceVersion: pkg.version });
    ```
 
 2. Primeira linha do `src/main.ts`: `import './instrumentation';` e o logger JSON no `create`:
@@ -111,9 +112,9 @@ Exemplo de linha:
 | Variável | Lado | Padrão | Uso |
 | --- | --- | --- | --- |
 | `OTEL_EXPORTER_OTLP_ENDPOINT` | back | vazio = desligado | URL base OTLP/HTTP do coletor (Grafana Alloy), ex. `http://alloy:4318`. |
-| `OTEL_SERVICE_NAME` | back | `unknown_service` | `service.name` (ex. `teatime-api`); a opção `serviceName` tem prioridade. |
-| `APP_RELEASE` | back | `npm_package_version` | `service.version` e release do GlitchTip. |
-| `DEPLOYMENT_ENVIRONMENT` | back | `local` | `prod` \| `hml` \| `local` (aceita `production`, `staging`). |
+| `OTEL_SERVICE_NAME` | back | opção `serviceName` | `service.name` (ex. `teatime-api`). Variáveis têm prioridade sobre as opções do código. |
+| `APP_RELEASE` | back | opção `serviceVersion`, senão `npm_package_version` | `service.version` e release do GlitchTip. |
+| `DEPLOYMENT_ENVIRONMENT` | back | opção `environment`, senão `local` | `prod` \| `hml` \| `local` (aceita `production`, `staging`). |
 | `ERRORS_DSN` | back/front | vazio = desligado | DSN do projeto no GlitchTip. No front entra no build (build-arg). |
 | `OTEL_TRACES_SAMPLER_ARG` | back | `1` | Fração de traces iniciados no back (os que vêm do front seguem a decisão do front). |
 | `OTEL_TRACES_EXPORTER` / `OTEL_METRICS_EXPORTER` / `OTEL_LOGS_EXPORTER` | back | `otlp` | `none` desliga um sinal (ex.: logs já coletados do stdout pelo Alloy). |

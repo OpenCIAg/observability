@@ -275,6 +275,19 @@ describe('configuração e modo desligado', () => {
     });
     expect(resolveConfig({ env: { OTEL_EXPORTER_OTLP_ENDPOINT: 'http://x', OTEL_SDK_DISABLED: 'true' } }).tracesEnabled).toBe(false);
   });
+  it('variável de ambiente vence a opção do código', () => {
+    const c = resolveConfig({
+      serviceName: 'teatime-api',
+      serviceVersion: '1.9.1',
+      environment: 'local',
+      env: { OTEL_SERVICE_NAME: 'teatime-api-hml', APP_RELEASE: '1.9.1-rc1', DEPLOYMENT_ENVIRONMENT: 'hml' },
+    });
+    expect(c).toMatchObject({ serviceName: 'teatime-api-hml', serviceVersion: '1.9.1-rc1', environment: 'hml' });
+    expect(resolveConfig({ serviceName: 'x', serviceVersion: '2.0.0', env: {} })).toMatchObject({
+      serviceName: 'x',
+      serviceVersion: '2.0.0',
+    });
+  });
   it('ignora /health e subcaminhos', () => {
     expect(isIgnoredPath('/health', ['/health'])).toBe(true);
     expect(isIgnoredPath('/health/ready?x=1', ['/health'])).toBe(true);

@@ -2,11 +2,11 @@ import { normalizeEnvironment, parseSampleRate, type DeploymentEnvironment } fro
 
 /** Opções de `initTelemetry`. Tudo opcional: o que faltar vem das variáveis de ambiente. */
 export interface TelemetryOptions {
-  /** `service.name` (padrão: `OTEL_SERVICE_NAME`). Ex.: `teatime-api`. */
+  /** `service.name` padrão (a variável `OTEL_SERVICE_NAME` tem prioridade). Ex.: `teatime-api`. */
   serviceName?: string;
-  /** `service.version` / release dos erros (padrão: `APP_RELEASE`, senão `npm_package_version`). */
+  /** `service.version` / release dos erros (`APP_RELEASE` tem prioridade; por último `npm_package_version`). */
   serviceVersion?: string;
-  /** `deployment.environment`: prod | hml | local (padrão: `DEPLOYMENT_ENVIRONMENT`). */
+  /** `deployment.environment`: prod | hml | local (`DEPLOYMENT_ENVIRONMENT` tem prioridade). */
   environment?: string;
   /** Caminhos de entrada que não geram trace nem linha de log (padrão: `/health`). */
   ignorePaths?: readonly string[];
@@ -52,10 +52,11 @@ export function resolveConfig(options: TelemetryOptions = {}): ResolvedConfig {
   const logLevel = clean(env.LOG_LEVEL)?.toLowerCase();
   const interval = Number(clean(env.OTEL_METRIC_EXPORT_INTERVAL));
   return {
-    serviceName: clean(options.serviceName) ?? clean(env.OTEL_SERVICE_NAME) ?? 'unknown_service',
+    // Variável de ambiente > opção do código (configuração vence código, como no padrão OTel).
+    serviceName: clean(env.OTEL_SERVICE_NAME) ?? clean(options.serviceName) ?? 'unknown_service',
     serviceVersion:
-      clean(options.serviceVersion) ?? clean(env.APP_RELEASE) ?? clean(env.npm_package_version) ?? '0.0.0',
-    environment: normalizeEnvironment(clean(options.environment) ?? clean(env.DEPLOYMENT_ENVIRONMENT)),
+      clean(env.APP_RELEASE) ?? clean(options.serviceVersion) ?? clean(env.npm_package_version) ?? '0.0.0',
+    environment: normalizeEnvironment(clean(env.DEPLOYMENT_ENVIRONMENT) ?? clean(options.environment)),
     otlpEndpoint,
     tracesEnabled: otlpEndpoint !== undefined && exporterOn(env.OTEL_TRACES_EXPORTER),
     metricsEnabled: otlpEndpoint !== undefined && exporterOn(env.OTEL_METRICS_EXPORTER),
